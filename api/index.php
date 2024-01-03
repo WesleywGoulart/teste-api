@@ -1,6 +1,11 @@
 <?php
 // api.php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json")
+
 // Verifica se a requisição é um GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Lógica para o endpoint
