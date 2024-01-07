@@ -2,11 +2,10 @@
 // api.php
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json")
+header("Content-Type: application/json");
 
-<?php
 // Inicializa a sessão
 session_start();
 
@@ -40,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
-    // Se a requisição não for um POST, retorna uma resposta JSON de erro
-    $response = array('success' => false, 'error' => 'Método não permitido. Use o método POST.');
-    echo json_encode($response);
+    // Se a requisição não for um POST, retorna um status 404
+    http_response_code(404);
     exit;
 }
 ?>
