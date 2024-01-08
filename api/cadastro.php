@@ -1,6 +1,35 @@
 <?php
 // cadastro.php
 
+// Habilita o CORS para todas as origens
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Adiciona OPTIONS aqui
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
+
+// Verifica se a requisição é um OPTIONS (preflight)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+// Configurações de conexão com o banco de dados
+$usuario = 'ateliesogra';
+$senha = 'Atelie@1020';
+$database = 'ateliesogra';
+$host = 'ateliesogra.mysql.dbaas.com.br';
+
+// Conecta ao banco de dados
+$conn = new mysqli($host, $usuario, $senha, $database);
+
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
+
+<?php
+// cadastro.php
+
 // ...
 
 // Verifica se a requisição é um POST
@@ -26,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Realiza o cadastro do usuário na tabela "usuarios"
-        $sql = "INSERT INTO usuarios (username, senha) VALUES ('$username', '$password')";
+        $sql = "INSERT INTO usuarios (username, password) VALUES ('$username', '$password')";
         $result = $conn->query($sql);
 
         if ($result === true) {
