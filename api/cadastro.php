@@ -27,11 +27,6 @@ if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
 
-<?php
-// cadastro.php
-
-// ...
-
 // Verifica se a requisição é um POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtém o conteúdo do corpo da requisição como JSON
@@ -49,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($resultExistingUser->num_rows > 0) {
             // Username já cadastrado, retorna uma resposta JSON de erro
-            $response = array('success' => true, 'error' => 'Username já cadastrado. Escolha outro.');
+            $response = array('success' => false, 'error' => 'Username já cadastrado. Escolha outro.');
             echo json_encode($response);
             exit;
         }
