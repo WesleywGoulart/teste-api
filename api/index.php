@@ -13,6 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+$usuario = 'ateliesogra';
+$senha = 'Atelie@1020';
+$database = 'ateliesogra';
+$host = 'ateliesogra.mysql.dbaas.com.br';
+
+$conn = new mysqli($host, $usuario, $senha, $database);
+
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
+
 // Inicializa a sessão
 session_start();
 
@@ -31,18 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($username === 'admin' && $password === 'password') {
             // Credenciais válidas, retorna uma resposta JSON de sucesso
             $response = array('success' => true, 'message' => 'Login bem-sucedido.');
-            echo json_encode($response);
+            echo json_encode($conn);
             exit;
         } else {
             // Credenciais inválidas, retorna uma resposta JSON de erro
             $response = array('success' => false, 'error' => 'Credenciais inválidas. Tente novamente.');
-            echo json_encode($response);
+            echo json_encode($conn);
             exit;
         }
     } else {
         // Campos de login e senha não fornecidos no formato JSON, retorna uma resposta JSON de erro
         $response = array('success' => false, 'error' => 'Dados de login ausentes no formato JSON.');
-        echo json_encode($response);
+        echo json_encode($conn);
         exit;
     }
 } else {
