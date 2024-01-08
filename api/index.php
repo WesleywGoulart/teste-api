@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $usuario = 'ateliesogra';
-$senha = 'Ateliea@1020';
+$senha = 'Atelie@1020';
 $database = 'ateliesogra';
 $host = 'ateliesogra.mysql.dbaas.com.br';
 
