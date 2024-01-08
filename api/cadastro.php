@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($resultExistingUser->num_rows > 0) {
             // Username já cadastrado, retorna uma resposta JSON de erro
-            $response = array('success' => false, 'error' => 'Username já cadastrado. Escolha outro.');
+            $response = array('success' => true, 'error' => 'Username já cadastrado. Escolha outro.');
             echo json_encode($response);
             exit;
         }
