@@ -49,8 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        // Cria o hash da senha
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
         // Realiza o cadastro do usuário na tabela "usuarios"
-        $sql = "INSERT INTO usuarios (username, password) VALUES ('$username', '$password')";
+        $sql = "INSERT INTO usuarios (username, password) VALUES ('$username', '$hashedPassword')";
         $result = $conn->query($sql);
 
         if ($result === true) {
