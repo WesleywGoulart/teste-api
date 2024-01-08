@@ -3,62 +3,58 @@
 
 // Habilita o CORS para todas as origens
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS"); // Adiciona OPTIONS aqui
+header("Access-Control-Allow-Methods: POST, OPTIONS, GET"); // Adiciona GET aqui
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-// Verifica se a requisição é um OPTIONS (preflight)
+// Verifica se a requisição é um OPTIONS (preflight) ou GET
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
-}
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Configurações de conexão com o banco de dados
+    $usuario = 'ateliesogra';
+    $senha = 'Atelie@1020';
+    $database = 'ateliesogra';
+    $host = 'ateliesogra.mysql.dbaas.com.br';
 
-$usuario = 'ateliesogra';
-$senha = 'Atelie@1020';
-$database = 'ateliesogra';
-$host = 'ateliesogra.mysql.dbaas.com.br';
+    // Conecta ao banco de dados
+    $conn = new mysqli($host, $usuario, $senha, $database);
 
-$conn = new mysqli($host, $usuario, $senha, $database);
+    // Verifica a conexão
+    if ($conn->connect_error) {
+        die("Falha na conexão: " . $conn->connect_error);
+    }
 
-// Verifica a conexão
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
-}
+    // Realiza a consulta na tabela "teste"
+    $sql = "SELECT * FROM usuarios";
+    $result = $conn->query($sql);
 
-// Inicializa a sessão
-session_start();
-
-// Verifica se a requisição é um POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtém o conteúdo do corpo da requisição como JSON
-    $jsonInput = file_get_contents('php://input');
-    $requestData = json_decode($jsonInput, true);
-
-    // Verifica se os campos de login e senha foram enviados no formato JSON
-    if (isset($requestData['username']) && isset($requestData['password'])) {
-        $username = $requestData['username'];
-        $password = $requestData['password'];
-
-        // Verifica se as credenciais são válidas
-        if ($username === 'admin' && $password === 'password') {
-            // Credenciais válidas, retorna uma resposta JSON de sucesso
-            $response = array('success' => true, 'message' => 'Login bem-sucedido.');
-            echo json_encode($response);
-            exit;
-        } else {
-            // Credenciais inválidas, retorna uma resposta JSON de erro
-            $response = array('success' => false, 'error' => 'Credenciais inválidas. Tente novamente.');
-            echo json_encode($response);
-            exit;
-        }
-    } else {
-        // Campos de login e senha não fornecidos no formato JSON, retorna uma resposta JSON de erro
-        $response = array('success' => false, 'error' => 'Dados de login ausentes no formato JSON.');
+    if ($result === false) {
+        // Se a consulta falhar, retorna uma resposta JSON de erro
+        $response = array('success' => false, 'error' => $conn->error);
         echo json_encode($response);
         exit;
     }
+
+    // Processa os resultados da consulta
+    $users = array();
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+
+    // Retorna os usuários em formato JSON
+    echo json_encode($users);
+    exit;
+}
+
+// Se não for uma requisição GET, verifica se é um POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Restante do seu código de login...
+    // ...
+
 } else {
-    // Se a requisição não for um POST, retorna um status 404
+    // Se a requisição não for um POST ou GET, retorna um status 404
     http_response_code(404);
     exit;
 }
