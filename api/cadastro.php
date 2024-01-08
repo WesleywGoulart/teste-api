@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $requestData['password'];
 
         // Realiza o cadastro do usuário na tabela "usuarios"
-        $sql = "INSERT INTO usuarios (username, password) VALUES ('$username', '$password')";
+        $sql = "INSERT INTO usuarios (username, senha) VALUES ('$username', '$password')";
         $result = $conn->query($sql);
 
         if ($result === true) {
